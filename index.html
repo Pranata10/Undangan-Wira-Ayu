@@ -7,7 +7,7 @@
 
     <meta property="og:title" content="Undangan Pernikahan Wira & Ayu">
     <meta property="og:description" content="Mohon doa restu dan kehadirannya di hari bahagia kami.">
-    <meta property="og:image" content="https://undangan-wira-ayu.vercel.app/img/wa.jpg">
+    <meta property="og:image" content="https://undangan-wira-ayu.vercel.app/wa.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="600">
     <meta property="og:image:height" content="600">
@@ -289,40 +289,48 @@
         });
 
         // Toggle Music (Manual lewat floating button)
-        function toggleMusic() {
-            const music = document.getElementById("weddingMusic");
-            const musicIcon = document.getElementById("musicIcon");
-            if (!music) return;
-            
-            if (music.paused) {
-                music.play();
+function toggleMusic() {
+    const music = document.getElementById("weddingMusic");
+    const musicIcon = document.getElementById("musicIcon");
+    if (!music) return;
+    
+    if (music.paused) {
+        music.play().then(() => {
+            if (musicIcon) musicIcon.innerText = "⏸";
+        }).catch(err => {
+            console.log("Gagal play audio:", err);
+        });
+    } else {
+        music.pause();
+        if (musicIcon) musicIcon.innerText = "▶︎";
+    }
+}
+
+// Scroll Next (Pindah Section + Otomatis Play Musik & Update Ikon)
+function scrollNext() {
+    const music = document.getElementById("weddingMusic");
+    const musicIcon = document.getElementById("musicIcon");
+
+    // 1. Paksa play musik langsung dalam event handler utama
+    if (music) {
+        // Reset waktu ke awal jika diperlukan, lalu putar
+        const playPromise = music.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
                 if (musicIcon) musicIcon.innerText = "⏸";
-            } else {
-                music.pause();
-                if (musicIcon) musicIcon.innerText = "▶︎";
-            }
+            }).catch(error => {
+                console.log("Autoplay ditolak browser:", error);
+            });
         }
+    }
 
-        // Scroll Next (Pindah Section + Otomatis Play Musik & Update Ikon)
-        function scrollNext() {
-            // 1. Play Musik & Update Ikon Floating Button
-            const music = document.getElementById("weddingMusic");
-            const musicIcon = document.getElementById("musicIcon");
-
-            if (music && music.paused) {
-                music.play().then(() => {
-                    if (musicIcon) musicIcon.innerText = "⏸";
-                }).catch(err => {
-                    console.log("Autoplay diblokir browser:", err);
-                });
-            }
-
-            // 2. Scroll ke Section Selanjutnya
-            const nextSection = document.getElementById("next-section");
-            if (nextSection) {
-                nextSection.scrollIntoView({ behavior: "smooth" });
-            }
-        }
+    // 2. Scroll ke Section Selanjutnya
+    const nextSection = document.getElementById("next-section");
+    if (nextSection) {
+        nextSection.scrollIntoView({ behavior: "smooth" });
+    }
+}
 
         // Reveal Animation
         function initReveal() {
