@@ -7,7 +7,7 @@
 
     <meta property="og:title" content="Undangan Pernikahan Wira & Ayu">
     <meta property="og:description" content="Mohon doa restu dan kehadirannya di hari bahagia kami.">
-    <meta property="og:image" content="https://undangan-wira-ayu.vercel.app/wa.jpg">
+    <meta property="og:image" content="https://undangan-wira-ayu.vercel.app/wa1.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="600">
     <meta property="og:image:height" content="600">
@@ -25,7 +25,7 @@
 
     <!-- Audio Element -->
     <audio id="weddingMusic" loop preload="auto">
-        <source src="vid/0917.MP3" type="audio/mpeg">
+        <source src="vid/0917.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Floating Music Button -->
@@ -181,6 +181,55 @@
         </div>
     </section>
 
+    <!-- RSVP & UCAPAN SECTION -->
+    <section class="rsvp-section py-16 bg-black text-white px-4">
+        <div class="max-w-xl mx-auto bg-neutral-900 border border-white/10 p-6 md:p-8 rounded-2xl shadow-2xl reveal">
+            <h2 class="text-3xl md:text-4xl font-['OrangeAvenue'] text-center text-white mb-2">
+                Berikan Ucapan & Doa
+            </h2>
+            <p class="text-xs text-center text-gray-400 uppercase tracking-widest mb-6">RSVP & Wishes</p>
+
+            <!-- Form Input -->
+            <form id="rsvpForm" onsubmit="submitRSVP(event)" class="space-y-4">
+                <div>
+                    <input type="text" id="rsvpName" required placeholder="Nama Anda" 
+                        class="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-white transition">
+                </div>
+
+                <div>
+                    <textarea id="rsvpMessage" rows="3" required placeholder="Tulis Ucapan & Doa..." 
+                        class="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-white transition resize-none"></textarea>
+                </div>
+
+                <div>
+                    <select id="rsvpStatus" required 
+                        class="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white focus:outline-none focus:border-white transition">
+                        <option value="" disabled selected class="bg-neutral-900 text-gray-400">Konfirmasi Kehadiran</option>
+                        <option value="Hadir" class="bg-neutral-900 text-white">Hadir</option>
+                        <option value="Ragu-ragu" class="bg-neutral-900 text-white">Ragu-ragu</option>
+                        <option value="Tidak Hadir" class="bg-neutral-900 text-white">Tidak Hadir</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submitBtn"
+                    class="w-full py-3 bg-white/20 hover:bg-white/30 border border-white/30 text-white font-medium rounded-lg backdrop-blur-md transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane text-xs"></i> Kirim Ucapan
+                </button>
+            </form>
+
+            <!-- Container Daftar Ucapan (Dinamis) -->
+            <div class="mt-8 pt-6 border-t border-white/10">
+                <h3 class="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">
+                    <span id="commentCount">0</span> Ucapan
+                </h3>
+                
+                <div id="commentsList" class="space-y-4 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Ucapan akan langsung masuk ke sini via JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- GALLERY SECTION -->
     <section class="gallery-section">
         <div class="gallery-header">
@@ -194,22 +243,16 @@
             <div class="gallery-grid" id="galleryGrid">
                 <div class="gallery-item"><img src="img/1.JPG" alt="Foto 1" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/2.JPG" alt="Foto 2" loading="lazy"></div>
-                <div class="gallery-item"><img src="img/3.jpg" alt="Foto 3" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/4.jpg" alt="Foto 4" loading="lazy"></div>
-                <div class="gallery-item"><img src="img/6.jpg" alt="Foto 6" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/7.jpg" alt="Foto 7" loading="lazy"></div>
-                <div class="gallery-item"><img src="img/8.jpg" alt="Foto 8" loading="lazy"></div>
-                <div class="gallery-item"><img src="img/9.jpg" alt="Foto 9" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/11.jpg" alt="Foto 11" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/12.jpg" alt="Foto 12" loading="lazy"></div>
-                <div class="gallery-item"><img src="img/13.jpg" alt="Foto 13" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/14.jpg" alt="Foto 14" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/15.jpg" alt="Foto 15" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/16.jpg" alt="Foto 16" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/17.jpg" alt="Foto 17" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/18.jpg" alt="Foto 18" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/19.jpg" alt="Foto 19" loading="lazy"></div>
-                <div class="gallery-item"><img src="img/20.jpg" alt="Foto 20" loading="lazy"></div>
                 <div class="gallery-item"><img src="img/21.jpg" alt="Foto 21" loading="lazy"></div>
             </div>
         </div>
@@ -257,10 +300,15 @@
 
     <!-- JAVASCRIPT -->
     <script>
+        // URL Google Apps Script
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_A-HY3NIa6_ql88zzj6C26uZfQLwA2ThvlhoTxjIV18uE5szTemAJ2utYOV2PrWAp/exec";
+
+        // Inisialisasi saat Halaman Selesai Load
         document.addEventListener("DOMContentLoaded", function() {
             initReveal();
             startCountdown();
             setGuestName();
+            fetchComments();
 
             const modal = document.getElementById("galleryModal");
             const modalImg = document.getElementById("imgFull");
@@ -290,7 +338,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const guest = urlParams.get('to');
             if (guest) {
-                document.getElementById('guestName').innerText = guest;
+                if (document.getElementById('guestName')) {
+                    document.getElementById('guestName').innerText = guest;
+                }
+                if (document.getElementById('rsvpName')) {
+                    document.getElementById('rsvpName').value = guest;
+                }
             }
         }
 
@@ -390,14 +443,102 @@
             }, 1000);
         }
 
-        // Copy Rekening
-        function copyToClipboard(id) {
-            const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Nomor rekening berhasil disalin!");
-            }).catch(err => {
-                console.error('Gagal menyalin: ', err);
+        // --- RSVP & UCAPAN FUNCTIONS ---
+
+        // Fetch Data dari Google Sheets
+        function fetchComments() {
+            const list = document.getElementById('commentsList');
+            if (list) list.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">Memuat ucapan...</p>';
+
+            fetch(SCRIPT_URL)
+                .then(response => response.json())
+                .then(data => {
+                    renderComments(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching comments:', error);
+                    if (list) list.innerHTML = '<p class="text-xs text-red-400 text-center py-4">Gagal memuat ucapan.</p>';
+                });
+        }
+
+        // Submit RSVP ke Google Sheets
+        function submitRSVP(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i> Mengirim...';
+
+            const now = new Date();
+            const timeString = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+
+            const formData = new URLSearchParams();
+            formData.append('name', document.getElementById('rsvpName').value.trim());
+            formData.append('message', document.getElementById('rsvpMessage').value.trim());
+            formData.append('status', document.getElementById('rsvpStatus').value);
+            formData.append('time', timeString);
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
+            })
+            .then(response => response.json())
+            .then(res => {
+                document.getElementById('rsvpMessage').value = '';
+                document.getElementById('rsvpStatus').value = '';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i> Kirim Ucapan';
+                fetchComments();
+            })
+            .catch(error => {
+                console.error('Error submitting RSVP:', error);
+                alert("Gagal mengirim ucapan, silakan coba lagi.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i> Kirim Ucapan';
             });
+        }
+
+        // Render Ucapan ke DOM
+        function renderComments(comments) {
+            const list = document.getElementById('commentsList');
+            const count = document.getElementById('commentCount');
+            if (!list) return;
+
+            count.innerText = comments.length;
+            list.innerHTML = '';
+
+            if (comments.length === 0) {
+                list.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">Belum ada ucapan.</p>';
+                return;
+            }
+
+            comments.forEach(item => {
+                const badgeColor = item.status === 'Hadir' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 
+                                   item.status === 'Ragu-ragu' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' : 
+                                   'bg-red-500/20 text-red-400 border-red-500/30';
+
+                const commentHTML = `
+                    <div class="p-4 bg-black/40 border border-white/5 rounded-xl space-y-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-semibold text-white text-sm">${escapeHTML(item.name)}</h4>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeColor}">${escapeHTML(item.status)}</span>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">${escapeHTML(item.message)}</p>
+                        <p class="text-[10px] text-gray-500 mt-1"><i class="fa-regular fa-clock"></i> ${escapeHTML(item.time)}</p>
+                    </div>
+                `;
+                list.innerHTML += commentHTML;
+            });
+        }
+
+        // XSS Protection
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
         }
     </script>
 </body>
